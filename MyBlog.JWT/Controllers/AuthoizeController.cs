@@ -42,7 +42,7 @@ namespace MyBlog.JWT.Controllers
                     };
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SDMC-CJAS1-SAD-DFSFA-SADHJVF-VF-CDFS"));
                 //issuer代表颁发Token的Web应用程序，audience是Token的受理者
-                //Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoi5ZSQ5a6X5p2wIiwiSWQiOiI0IiwiVXNlck5hbWUiOiJhZG1pbiIsIm5iZiI6MTcxMTU1MzY0MiwiZXhwIjoxNzExNTU3MjQyLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjYwNjAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAifQ.LBydevQJi1XeFJRTQ7E2-0woqQDw1nm2tlwk8D4CQB8
+                //Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoi5ZSQ5a6X5p2wIiwiSWQiOiI0IiwiVXNlck5hbWUiOiJhZG1pbiIsIm5iZiI6MTcxMjMxNDE1OCwiZXhwIjoxNzEyMzE3NzU4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjYwNjAiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAifQ.0s7WYFUAc_AIHZzL6gd1A4aoROAHzA0l97mYN49mteQ
                 var token = new JwtSecurityToken(
                     issuer: "http://localhost:6060",
                     audience: "http://localhost:5000",

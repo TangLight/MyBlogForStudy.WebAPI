@@ -24,7 +24,8 @@ namespace MyBlog.Repository
             base.Context.CodeFirst.InitTables(
               typeof(BlogNews),
               typeof(TypeInfo),
-              typeof(WriterInfo)
+              typeof(WriterInfo),
+              typeof(User)
               );
         }
         public async Task<bool> CreateAsync(TEntity entity)

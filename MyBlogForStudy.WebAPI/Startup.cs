@@ -85,6 +85,15 @@ namespace MyBlog.WebApi
             #region AutoMapper
             services.AddAutoMapper(typeof(CustomAutoMapperProfile));
             #endregion
+            services.AddCors(options =>
+            {
+                options.AddPolicy("any", builder =>
+                {
+                    builder.AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowAnyOrigin(); // 注意：在生产环境中不要使用 AllowAnyOrigin，因为它允许任何来源的跨域请求，这可能带来安全风险。
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +105,9 @@ namespace MyBlog.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBlog.WebApi v1"));
             }
+            //跨域
+            app.UseCors("any");
+
             app.UseRouting();
             //添加到管道中 鉴权
             app.UseAuthentication();
@@ -106,6 +118,7 @@ namespace MyBlog.WebApi
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
     public static class IOCExtend
@@ -118,6 +131,8 @@ namespace MyBlog.WebApi
             services.AddScoped<ITypeInfoService, TypeInfoService>();
             services.AddScoped<IWriterInfoRepository, WriterInfoRepository>();
             services.AddScoped<IWriterInfoService, WriterInfoService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
         public static IServiceCollection AddCustomJWT(this IServiceCollection services)
