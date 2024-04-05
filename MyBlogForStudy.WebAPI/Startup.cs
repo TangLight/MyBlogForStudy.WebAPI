@@ -146,6 +146,7 @@ namespace MyBlog.WebApi
                           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SDMC-CJAS1-SAD-DFSFA-SADHJVF-VF-CDFS")),
                           ValidateIssuer = true,
                           ValidIssuer = "http://localhost:6060",
+
                           ValidateAudience = true,
                           ValidAudience = "http://localhost:5000",
                           ValidateLifetime = true,

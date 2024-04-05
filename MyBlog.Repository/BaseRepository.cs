@@ -25,7 +25,25 @@ namespace MyBlog.Repository
               typeof(BlogNews),
               typeof(TypeInfo),
               typeof(WriterInfo),
-              typeof(User)
+              typeof(Blog),
+              typeof(BlogNews),
+              typeof(Category),
+              typeof(CityVisitor),
+              typeof(Comment),
+              typeof(ExceptionLog),
+              typeof(Friend),
+              typeof(LoginLog),
+              typeof(Moment),
+              typeof(OperationLog),
+              typeof(ScheduleJob),
+              typeof(ScheduleJobLog),
+              typeof(SiteSetting),
+              typeof(Tag),
+              typeof(User),
+              typeof(VisitLog),
+              typeof(Visitor),
+              typeof(VisitRecord),
+              typeof(WriterInfo)
               );
         }
         public async Task<bool> CreateAsync(TEntity entity)
