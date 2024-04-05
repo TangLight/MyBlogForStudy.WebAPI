@@ -1,0 +1,6 @@
+@MyBlog.JWT_HostAddress = http://localhost:5050
+
+GET {{MyBlog.JWT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
