@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using MyBlog.Model;
 using MyBlog.Model.DTO;
+using MyBlog.Model.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

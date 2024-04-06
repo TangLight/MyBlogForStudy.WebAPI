@@ -1,6 +1,6 @@
 ﻿using MyBlog.IRepository;
 using MyBlog.IService;
-using MyBlog.Model;
+using MyBlog.Model.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

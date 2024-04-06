@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
-using MyBlog.Model;
 using MyBlog.Model.DTO;
+using MyBlog.Model.entity;
 using MyBlog.WebApi.Utility.ApiResult;
 using SqlSugar;
 

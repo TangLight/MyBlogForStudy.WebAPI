@@ -1,6 +1,6 @@
 ﻿
 using MyBlog.IRepository;
-using MyBlog.Model;
+using MyBlog.Model.entity;
 using SqlSugar;
 using SqlSugar.IOC;
 using System;
@@ -93,5 +93,6 @@ namespace MyBlog.Repository
               .Where(func)
               .ToPageListAsync(page, size, total);
         }
+        
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
-using MyBlog.Model;
+using MyBlog.Model.entity;
 using MyBlog.WebApi.Utility.ApiResult;
 using System;
 using System.Collections.Generic;

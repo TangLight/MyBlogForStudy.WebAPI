@@ -1,5 +1,5 @@
 ﻿using MyBlog.IRepository;
-using MyBlog.Model;
+using MyBlog.Model.entity;
 using System;
 using System.Collections.Generic;
 using System.Text;

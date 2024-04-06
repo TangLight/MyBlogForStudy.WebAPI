@@ -1,5 +1,5 @@
 ﻿using MyBlog.IRepository;
-using MyBlog.Model;
+using MyBlog.Model.entity;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
