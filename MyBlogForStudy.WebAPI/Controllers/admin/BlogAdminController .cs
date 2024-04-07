@@ -109,22 +109,31 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         //    return Result.Ok("操作成功");
         //}
 
+        //[HttpGet("blog")]
+        //public async Task<Result> GetBlog([FromQuery] long id)
+        //{
+        //    var blog = await _blogService.QueryAsync(c=>c.Id==id);
+
+        //    return Result.Ok("获取成功", blog);
+        //}
         [HttpGet("blog")]
-        public async Task<Result> GetBlog([FromQuery] long id)
+        public async Task<Result> GetBlog([FromServices] IMapper imapper,[FromQuery] long id)
         {
-            var blog = await _blogService.QueryAsync(c=>c.Id==id);
-            
+
+            var bloglist = await _blogService.QueryAsync(c => c.Id == id);
+            var blog = bloglist.Find(c => c.Id == id);
             return Result.Ok("获取成功", blog);
         }
 
         [HttpPost("blog")]
-        public Result SaveBlog([FromServices]IMapper imapper, [FromBody] BlogDTO blogDTO)
+        public Result SaveBlog([FromServices] IMapper imapper, [FromBody] BlogDTO blogDTO)
         {
             Blog blog = imapper.Map<Blog>(blogDTO);
             _blogService.CreateAsync(blog);
 
             return Result.Ok("save", blog);
         }
+
 
         //[HttpPut("blog")]
         //[OperationLogger("更新博客")]

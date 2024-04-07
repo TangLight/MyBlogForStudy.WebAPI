@@ -58,12 +58,12 @@ namespace MyBlog.Model.entity
 
 
 
-        [Navigate(NavigateType.ManyToOne, nameof(CategoryId), nameof(Category.Id))]
+        [Navigate(NavigateType.ManyToOne, nameof(Cate), nameof(Category.Id))]
         public Category Category { get; set; }
 
         
 
-        public int CategoryId { get; set; }
+        public int Cate { get; set; }
 
         [Navigate(typeof(Blog_Tag), nameof(Blog_Tag.BlogId), nameof(Blog_Tag.TagId))]
         public List<Tag> Tags { get; set; }
