@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
+using MyBlog.Model.DTO;
 using MyBlog.Model.entity;
 using MyBlog.Model.vo;
 using MyBlog.Service;
@@ -16,13 +18,15 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         private readonly ICategoryService _categoryService;
         private readonly ITagService _tagService;
         private readonly ICommentService _commentService;
+        private readonly IBlog_TagService _blog_TagService;
 
-        public BlogAdminController(IBlogService blogService, ICategoryService categoryService, ITagService tagService, ICommentService commentService)
+        public BlogAdminController(IBlogService blogService, ICategoryService categoryService, ITagService tagService, ICommentService commentService, IBlog_TagService blog_TagService)
         {
             _blogService = blogService;
             _categoryService = categoryService;
             _tagService = tagService;
             _commentService = commentService;
+            _blog_TagService = blog_TagService;
         }
 
         [HttpGet("blogs")]
@@ -34,90 +38,93 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
             PageInfo<Blog> pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync());
             var categories = await _categoryService.QueryAsync();
 
-            //if (!string.IsNullOrEmpty(title))
-            //{
-            //    pageInfo = await _blogService.QueryAsync(c => c.Title == title && c.Category.Id == categoryId, pageNum, pageSize, total);
-            //}
-            
-            //if (categoryId!=0)
-            //{
-            //     categories = await _categoryService.QueryAsync(c => c.Id == categoryId);
-
-            //}
-
-
                 Dictionary<string, object> map = new  Dictionary<string, object>
             {
                 { "blogs", pageInfo },
                 { "categories", categories }
             };
-            var result= Result.Ok("请求成功", map);
+            var result= Result.Ok("ok", map);
             return Ok(result);
         }
 
 
 
 
-        //[HttpDelete("blog")]
+        [HttpDelete("blog")]
         //[OperationLogger("删除博客")]
-        //public Result Delete([FromQuery] long id)
-        //{
-        //    _blogService.DeleteBlogTagByBlogId(id);
-        //    _blogService.DeleteBlogById(id);
-        //    _commentService.DeleteCommentsByBlogId(id);
-        //    return Result.Ok("删除成功");
-        //}
+        public Result Delete([FromQuery] long id)
+        {
+            //_blogService.DeleteBlogTagByBlogId(id);
+            //_blogService.DeleteBlogById(id);
+            //_commentService.DeleteCommentsByBlogId(id);
+            _blogService.DeleteAsync(id);
+            _blog_TagService.DeleteAsync(c=>c.BlogId==id);
+            _commentService.DeleteAsync(c=>c.BlogId==id);
+            return Result.Ok("删除成功");
+        }
 
-        //[HttpGet("categoryAndTag")]
-        //public Result CategoryAndTag()
-        //{
-        //    List<Category> categories = _categoryService.GetCategoryList();
-        //    List<Tag> tags = _tagService.GetTagList();
-        //    Dictionary<string, object> map = new Dictionary<string, object>
-        //    {
-        //        { "categories", categories },
-        //        { "tags", tags }
-        //    };
-        //    return Result.Ok("请求成功", map);
-        //}
+        [HttpGet("categoryAndTag")]
+        public async Task<Result> CategoryAndTag()
+        {
+            //List<Category> categories = _categoryService.GetCategoryList();
+            List<Category> categories = await _categoryService.QueryAsync();
+            //List <Tag> tags = _tagService.GetTagList();
+            List<Tag> tags = await _tagService.QueryAsync();
+            Dictionary<string, object> map = new Dictionary<string, object>
+            {
+                { "categories", categories },
+                { "tags", tags }
+            };
+            return Result.Ok("请求成功", map);
+        }
 
-        //[HttpPut("blog/top")]
+        [HttpPut("blog/top")]
         //[OperationLogger("更新博客置顶状态")]
-        //public Result UpdateTop([FromQuery] long id, [FromQuery] bool top)
-        //{
-        //    _blogService.UpdateBlogTopById(id, top);
-        //    return Result.Ok("操作成功");
-        //}
+        public async Task<Result> UpdateTop([FromQuery] long id, [FromQuery] bool top)
+        {
+            //_blogService.UpdateBlogTopById(id, top);
+            Blog blog=await _blogService.FindAsync(id);
+            blog.Top = top;
+            await _blogService.EditAsync(blog);
+            return Result.Ok("操作成功");
+        }
 
-        //[HttpPut("blog/recommend")]
+        [HttpPut("blog/recommend")]
         //[OperationLogger("更新博客推荐状态")]
-        //public Result UpdateRecommend([FromQuery] long id, [FromQuery] bool recommend)
-        //{
-        //    _blogService.UpdateBlogRecommendById(id, recommend);
-        //    return Result.Ok("操作成功");
-        //}
+        public async Task<Result> UpdateRecommend([FromQuery] long id, [FromQuery] bool recommend)
+        {
+            //_blogService.UpdateBlogRecommendById(id, recommend);
+            Blog blog = await _blogService.FindAsync(id);
+            blog.Recommend = recommend;
+            await _blogService.EditAsync(blog);
+            return Result.Ok("操作成功");
+        }
 
         //[HttpPut("blog/{id}/visibility")]
-        //[OperationLogger("更新博客可见性状态")]
-        //public Result UpdateVisibility([FromRoute] long id, [FromBody] BlogVisibility blogVisibility)
+        ////[OperationLogger("更新博客可见性状态")]
+        //public async Task<Result> UpdateVisibility([FromRoute] long id, [FromBody] BlogVisibility blogVisibility)
         //{
-        //    _blogService.UpdateBlogVisibilityById(id, blogVisibility);
+        //    //_blogService.UpdateBlogVisibilityById(id, blogVisibility);
+
         //    return Result.Ok("操作成功");
         //}
 
-        //[HttpGet("blog")]
-        //public Result GetBlog([FromQuery] long id)
-        //{
-        //    Blog blog = _blogService.GetBlogById(id);
-        //    return Result.Ok("获取成功", blog);
-        //}
+        [HttpGet("blog")]
+        public async Task<Result> GetBlog([FromQuery] long id)
+        {
+            var blog = await _blogService.QueryAsync(c=>c.Id==id);
+            
+            return Result.Ok("获取成功", blog);
+        }
 
-        //[HttpPost("blog")]
-        //[OperationLogger("发布博客")]
-        //public Result SaveBlog([FromBody] Blog blog)
-        //{
-        //    return GetResult(blog, "save");
-        //}
+        [HttpPost("blog")]
+        public Result SaveBlog([FromServices]IMapper imapper, [FromBody] BlogDTO blogDTO)
+        {
+            Blog blog = imapper.Map<Blog>(blogDTO);
+            _blogService.CreateAsync(blog);
+
+            return Result.Ok("save", blog);
+        }
 
         //[HttpPut("blog")]
         //[OperationLogger("更新博客")]

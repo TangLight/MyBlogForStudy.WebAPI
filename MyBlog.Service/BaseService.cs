@@ -22,6 +22,15 @@ namespace MyBlog.Service
         {
             return await _iBaseRepository.DeleteAsync(id);
         }
+        public async Task<bool> DeleteAsync(long id)
+        {
+            return await _iBaseRepository.DeleteAsync(id);
+        }
+
+        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> func)
+        {
+            return await _iBaseRepository.DeleteAsync(func);
+        }
 
         public async Task<bool> EditAsync(TEntity entity)
         {
@@ -29,6 +38,10 @@ namespace MyBlog.Service
         }
 
         public async Task<TEntity> FindAsync(int id)
+        {
+            return await _iBaseRepository.FindAsync(id);
+        }
+        public async Task<TEntity> FindAsync(long id)
         {
             return await _iBaseRepository.FindAsync(id);
         }

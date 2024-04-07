@@ -1,6 +1,7 @@
 ﻿
 using MyBlog.IRepository;
 using MyBlog.Model.entity;
+using MyBlog.Model.mapper;
 using SqlSugar;
 using SqlSugar.IOC;
 using System;
@@ -26,6 +27,7 @@ namespace MyBlog.Repository
               typeof(TypeInfo),
               typeof(WriterInfo),
               typeof(Blog),
+              typeof(Blog_Tag),
               typeof(BlogNews),
               typeof(Category),
               typeof(CityVisitor),
@@ -55,6 +57,14 @@ namespace MyBlog.Repository
         {
             return await base.DeleteByIdAsync(id);
         }
+        public async Task<bool> DeleteAsync(long id)
+        {
+            return await base.DeleteByIdAsync(id);
+        }
+        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> func)
+        {
+            return await base.DeleteByIdAsync(func);
+        }
 
         public async Task<bool> EditAsync(TEntity entity)
         {
@@ -62,6 +72,10 @@ namespace MyBlog.Repository
         }
         //导航查询
         public virtual async Task<TEntity> FindAsync(int id)
+        {
+            return await base.GetByIdAsync(id);
+        }
+        public virtual async Task<TEntity> FindAsync(long id)
         {
             return await base.GetByIdAsync(id);
         }

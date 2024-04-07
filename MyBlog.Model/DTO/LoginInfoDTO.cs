@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Model.DTO
 {
-    public class LoginInfo
+    public class LoginInfoDTO
     {
 
         public string Username { get; set; }

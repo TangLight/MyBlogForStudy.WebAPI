@@ -22,7 +22,7 @@ namespace MyBlogForStudy.WebAPI.Controllers
         }
 
         [HttpPost("admin/login")]
-        public async Task<ActionResult> login([FromBody] LoginInfo loginInfo)
+        public async Task<ActionResult> login([FromBody] LoginInfoDTO loginInfo)
         {
             var  user = await _userService.FindAsync(c=>c.Username == loginInfo.Username&&c.Password==loginInfo.Password);
             

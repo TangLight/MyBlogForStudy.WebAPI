@@ -11,8 +11,11 @@ namespace MyBlog.IRepository
     {
         Task<bool> CreateAsync(TEntity entity);
         Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(long id);
+        Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> func);
         Task<bool> EditAsync(TEntity entity);
         Task<TEntity> FindAsync(int id);
+        Task<TEntity> FindAsync(long id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> func);
         /// <summary>
         /// 查询全部的数据

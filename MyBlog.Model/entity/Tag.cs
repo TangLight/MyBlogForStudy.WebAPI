@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Model.entity
 {
+    using MyBlog.Model.mapper;
     using SqlSugar;
 
     [SugarTable("tags")]
@@ -20,7 +21,7 @@ namespace MyBlog.Model.entity
         [SugarColumn(Length = 50)]
         public string Color { get; set; }
 
-        [SugarColumn(IsIgnore = true)]
+        [Navigate(typeof(Blog_Tag), nameof(Blog_Tag.TagId), nameof(Blog_Tag.BlogId))]
         public List<Blog> Blogs { get; set; } = new List<Blog>();
     }
 

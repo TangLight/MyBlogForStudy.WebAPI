@@ -11,8 +11,4 @@
     <PackageReference Include="SqlSugarCore" Version="5.1.4.146" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="mapper\" />
-  </ItemGroup>
-
 </Project>

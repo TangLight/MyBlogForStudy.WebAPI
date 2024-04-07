@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.IService", "MyBlog.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Service", "MyBlog.Service\MyBlog.Service.csproj", "{ED286837-FB90-42FC-95AF-D26F73A974C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.JWT", "MyBlog.JWT\MyBlog.JWT.csproj", "{F1D656C1-8CFC-48A3-A635-1AE2546F1FF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.JWT", "MyBlog.JWT\MyBlog.JWT.csproj", "{F1D656C1-8CFC-48A3-A635-1AE2546F1FF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

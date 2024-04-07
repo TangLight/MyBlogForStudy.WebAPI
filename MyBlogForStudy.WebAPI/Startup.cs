@@ -135,6 +135,8 @@ namespace MyBlog.WebApi
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IBlog_TagRepository, Blog_TagRepository>();
+            services.AddScoped<IBlog_TagService, Blog_TagService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICommentRepository, CommentRepository>();

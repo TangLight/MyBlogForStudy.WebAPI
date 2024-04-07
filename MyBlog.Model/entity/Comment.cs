@@ -47,10 +47,10 @@ namespace MyBlog.Model.entity
         public string Qq { get; set; }
 
         // 关联属性
-        [SugarColumn(IsIgnore = true)]
+        [Navigate(NavigateType.ManyToOne, nameof(BlogId), nameof(Blog.Id))]
         public Blog Blog { get; set; }
 
-        [SugarColumn(IsIgnore = true)]
+        public int BlogId { get; set; }
         public List<Comment> ReplyComments { get; set; } = new List<Comment>();
     }
 

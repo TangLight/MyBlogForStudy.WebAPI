@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Model.entity
 {
+    using MyBlog.Model.mapper;
     using SqlSugar;
     using System;
     using System.Collections.Generic;
@@ -60,10 +61,12 @@ namespace MyBlog.Model.entity
         [Navigate(NavigateType.ManyToOne, nameof(CategoryId), nameof(Category.Id))]
         public Category Category { get; set; }
 
+        
+
         public int CategoryId { get; set; }
 
-        [SugarColumn(IsIgnore = true)]
-        public List<Tag> Tags { get; set; } = new List<Tag>();
+        [Navigate(typeof(Blog_Tag), nameof(Blog_Tag.BlogId), nameof(Blog_Tag.TagId))]
+        public List<Tag> Tags { get; set; }
     }
 
 
