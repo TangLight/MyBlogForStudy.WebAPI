@@ -9,6 +9,7 @@ namespace MyBlog.Model.DTO
 {
     public class BlogDTO
     {
+        public int ID { get; set; }
         public string Title { get; set; }
         public string FirstPicture { get; set; }
         public string Description { get; set; }

@@ -109,13 +109,7 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         //    return Result.Ok("操作成功");
         //}
 
-        //[HttpGet("blog")]
-        //public async Task<Result> GetBlog([FromQuery] long id)
-        //{
-        //    var blog = await _blogService.QueryAsync(c=>c.Id==id);
-
-        //    return Result.Ok("获取成功", blog);
-        //}
+        
         [HttpGet("blog")]
         public async Task<Result> GetBlog([FromServices] IMapper imapper,[FromQuery] long id)
         {
@@ -126,12 +120,12 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         }
 
         [HttpPost("blog")]
-        public Result SaveBlog([FromServices] IMapper imapper, [FromBody] BlogDTO blogDTO)
+        public async Task<Result> SaveBlog([FromServices] IMapper imapper, [FromBody] BlogDTO blogDTO)
         {
-            Blog blog = imapper.Map<Blog>(blogDTO);
-            _blogService.CreateAsync(blog);
+            Blog blog = imapper.Map<Blog>( blogDTO);
+            await _blogService.CreateAsync(blog);
 
-            return Result.Ok("save", blog);
+            return  Result.Ok("创建成功", blog);
         }
 
 
@@ -141,6 +135,19 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         //{
         //    return GetResult(blog, "update");
         //}
+        [HttpPut("blog")]
+        //[OperationLogger("更新博客")]
+        public async Task<Result> UpdateBlog([FromQuery] long id,[FromServices] IMapper imapper, [FromBody] BlogDTO blogDTO )
+        {
+            if (id == 0&& blogDTO.ID!=0)
+            {
+                id = blogDTO.ID;
+            }
+            Blog blog = imapper.Map<Blog>(blogDTO);
+            blog.Id = id;
+            await _blogService.EditAsync(blog);
+            return Result.Ok("更新成功", blog);
+        }
 
         //private Result GetResult(Blog blog, string type)
         //{

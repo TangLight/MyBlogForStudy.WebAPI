@@ -68,6 +68,7 @@ namespace MyBlog.Repository
 
         public async Task<bool> EditAsync(TEntity entity)
         {
+            
             return await base.UpdateAsync(entity);
         }
         //导航查询
