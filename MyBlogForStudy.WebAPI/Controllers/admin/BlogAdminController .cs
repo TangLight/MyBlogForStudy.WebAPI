@@ -4,6 +4,7 @@ using MyBlog.Model.entity;
 using MyBlog.Model.vo;
 using MyBlog.Service;
 using MyBlogForStudy.WebAPI.PageHelper;
+using SqlSugar;
 
 namespace MyBlogForStudy.WebAPI.Controllers.admin
 {
@@ -27,17 +28,25 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         [HttpGet("blogs")]
         public async Task<ActionResult> Blogs([FromQuery] string title = "", [FromQuery] int categoryId = 0, [FromQuery] int pageNum = 1, [FromQuery] int pageSize = 10)
         {
+            RefAsync<int> total = 0;
             string orderBy = "create_time desc";
-            //PageInfo<Blog> pageInfo = new PageInfo<Blog>(_blogService.GetListByTitleAndCategoryId(title, categoryId, pageNum, pageSize));
-            var pageInfo = await _blogService.QueryAsync(c => c.Title == title && c.Category.Id == categoryId);
-            //var query = _db.Queryable<Blog>()
-            //        .JoinTable<Category>((b, c) => b.CategoryId == c.Id) // 将 Category 加入到查询中
-            //        .Where((b, c) => b.Title == title && c.Id == categoryId) // 在查询条件中使用 Category 的属性
-            //        .Select((b, c) => new { Blog = b, Category = c }) // 选择需要的属性
-            //        .OrderBy("create_time desc") // 排序
-            //        .ToPageListAsync(pageNum, pageSize);
-            var categories = await _categoryService.QueryAsync(c=>c.Id== categoryId);
-            Dictionary<string, object> map = new  Dictionary<string, object>
+
+            PageInfo<Blog> pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync());
+            var categories = await _categoryService.QueryAsync();
+
+            //if (!string.IsNullOrEmpty(title))
+            //{
+            //    pageInfo = await _blogService.QueryAsync(c => c.Title == title && c.Category.Id == categoryId, pageNum, pageSize, total);
+            //}
+            
+            //if (categoryId!=0)
+            //{
+            //     categories = await _categoryService.QueryAsync(c => c.Id == categoryId);
+
+            //}
+
+
+                Dictionary<string, object> map = new  Dictionary<string, object>
             {
                 { "blogs", pageInfo },
                 { "categories", categories }
@@ -45,6 +54,8 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
             var result= Result.Ok("请求成功", map);
             return Ok(result);
         }
+
+
 
 
         //[HttpDelete("blog")]
