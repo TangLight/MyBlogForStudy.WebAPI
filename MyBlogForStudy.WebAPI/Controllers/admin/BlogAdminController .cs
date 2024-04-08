@@ -7,6 +7,7 @@ using MyBlog.Model.vo;
 using MyBlog.Service;
 using MyBlogForStudy.WebAPI.PageHelper;
 using SqlSugar;
+using System.Diagnostics.Eventing.Reader;
 
 namespace MyBlogForStudy.WebAPI.Controllers.admin
 {
@@ -36,9 +37,30 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
             string orderBy = "create_time desc";
 
             PageInfo<Blog> pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync());
-            var categories = await _categoryService.QueryAsync();
+            RefAsync<int> tota1all = (RefAsync<int>)pageInfo.Total;
+            if (categoryId == 0&& title == "")
+            {
+                 pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync(pageNum, pageSize, total));
+                
+            }
+            else if(categoryId == 0 && title != "")
+            {
+                 pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync(c => c.Title.Contains(title), pageNum, pageSize, total));
+            }
+            else if(categoryId != 0 && title == "")
+            {
+                 pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync(c => c.Category.Id == categoryId, pageNum, pageSize, total));
+            }
+            else if (categoryId != 0 && title != "")
+            {
+                 pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync(c => c.Title.Contains(title) && c.Category.Id == categoryId, pageNum, pageSize, total));
+            }
 
-                Dictionary<string, object> map = new  Dictionary<string, object>
+
+                var categories = await _categoryService.QueryAsync();
+
+            pageInfo.Total = tota1all;
+            Dictionary<string, object> map = new  Dictionary<string, object>
             {
                 { "blogs", pageInfo },
                 { "categories", categories }
