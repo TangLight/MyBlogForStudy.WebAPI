@@ -35,7 +35,6 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         {
             RefAsync<int> total = 0;
             string orderBy = "create_time desc";
-
             PageInfo<Blog> pageInfo = new PageInfo<Blog>(await _blogService.QueryAsync());
             RefAsync<int> tota1all = (RefAsync<int>)pageInfo.Total;
             if (categoryId == 0&& title == "")
@@ -147,16 +146,9 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
             Blog blog = imapper.Map<Blog>( blogDTO);
             await _blogService.CreateAsync(blog);
 
-            return  Result.Ok("创建成功", blog);
+            return  Result.Ok("save", blog);
         }
 
-
-        //[HttpPut("blog")]
-        //[OperationLogger("更新博客")]
-        //public Result UpdateBlog([FromBody] Blog blog)
-        //{
-        //    return GetResult(blog, "update");
-        //}
         [HttpPut("blog")]
         //[OperationLogger("更新博客")]
         public async Task<Result> UpdateBlog([FromQuery] long id,[FromServices] IMapper imapper, [FromBody] BlogDTO blogDTO )
@@ -178,92 +170,92 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         //        return Result.Error("参数有误");
         //    }
 
-        //    object cate = blog.Cate;
-        //    if (cate == null)
-        //    {
-        //        return Result.Error("分类不能为空");
-        //    }
-        //    if (cate is int)
-        //    {
-        //        Category c = _categoryService.GetCategoryById((long)cate);
-        //        blog.Category = c;
-        //    }
-        //    else if (cate is string)
-        //    {
-        //        Category category = _categoryService.GetCategoryByName((string)cate);
-        //        if (category != null)
-        //        {
-        //            return Result.Error("不可添加已存在的分类");
-        //        }
-        //        Category c = new Category { Name = (string)cate };
-        //        _categoryService.SaveCategory(c);
-        //        blog.Category = c;
-        //    }
-        //    else
-        //    {
-        //        return Result.Error("分类不正确");
-        //    }
+            //object cate = blog.Cate;
+            //    if (cate == null)
+            //    {
+            //        return Result.Error("分类不能为空");
+            //    }
+            //    if (cate is int)
+            //    {
+            //        Category c = _categoryService.GetCategoryById((long)cate);
+            //        blog.Category = c;
+            //    }
+            //    else if (cate is string)
+            //    {
+            //        Category category = _categoryService.GetCategoryByName((string)cate);
+            //        if (category != null)
+            //        {
+            //            return Result.Error("不可添加已存在的分类");
+            //        }
+            //        Category c = new Category { Name = (string)cate };
+            //        _categoryService.SaveCategory(c);
+            //        blog.Category = c;
+            //    }
+            //    else
+            //    {
+            //        return Result.Error("分类不正确");
+            //    }
 
-        //    List<object> tagList = blog.TagList;
-        //    List<Tag> tags = new List<Tag>();
-        //    foreach (var t in tagList)
-        //    {
-        //        if (t is int)
-        //        {
-        //            Tag tag = _tagService.GetTagById((long)t);
-        //            tags.Add(tag);
-        //        }
-        //        else if (t is string)
-        //        {
-        //            Tag tag1 = _tagService.GetTagByName((string)t);
-        //            if (tag1 != null)
-        //            {
-        //                return Result.Error("不可添加已存在的标签");
-        //            }
-        //            Tag tag = new Tag { Name = (string)t };
-        //            _tagService.SaveTag(tag);
-        //            tags.Add(tag);
-        //        }
-        //        else
-        //        {
-        //            return Result.Error("标签不正确");
-        //        }
-        //    }
+            //    List<object> tagList = blog.TagList;
+            //    List<Tag> tags = new List<Tag>();
+            //    foreach (var t in tagList)
+            //    {
+            //        if (t is int)
+            //        {
+            //            Tag tag = _tagService.GetTagById((long)t);
+            //            tags.Add(tag);
+            //        }
+            //        else if (t is string)
+            //        {
+            //            Tag tag1 = _tagService.GetTagByName((string)t);
+            //            if (tag1 != null)
+            //            {
+            //                return Result.Error("不可添加已存在的标签");
+            //            }
+            //            Tag tag = new Tag { Name = (string)t };
+            //            _tagService.SaveTag(tag);
+            //            tags.Add(tag);
+            //        }
+            //        else
+            //        {
+            //            return Result.Error("标签不正确");
+            //        }
+            //    }
 
-        //    DateTime date = DateTime.Now;
-        //    if (blog.ReadTime == null || blog.ReadTime < 0)
-        //    {
-        //        blog.ReadTime = (int)Math.Round(blog.Words.Value / 200.0);
-        //    }
-        //    if (blog.Views == null || blog.Views < 0)
-        //    {
-        //        blog.Views = 0;
-        //    }
-        //    if ("save".Equals(type))
-        //    {
-        //        blog.CreateTime = date;
-        //        blog.UpdateTime = date;
-        //        User user = new User { Id = 1 };
-        //        blog.User = user;
+            //    DateTime date = DateTime.Now;
+            //    if (blog.ReadTime == null || blog.ReadTime < 0)
+            //    {
+            //        blog.ReadTime = (int)Math.Round(blog.Words.Value / 200.0);
+            //    }
+            //    if (blog.Views == null || blog.Views < 0)
+            //    {
+            //        blog.Views = 0;
+            //    }
+            //    if ("save".Equals(type))
+            //    {
+            //        blog.CreateTime = date;
+            //        blog.UpdateTime = date;
+            //        User user = new User { Id = 1 };
+            //        blog.User = user;
 
-        //        _blogService.SaveBlog(blog);
-        //        foreach (var t in tags)
-        //        {
-        //            _blogService.SaveBlogTag(blog.Id, t.Id);
-        //        }
-        //        return Result.Ok("添加成功");
-        //    }
-        //    else
-        //    {
-        //        blog.UpdateTime = date;
-        //        _blogService.UpdateBlog(blog);
-        //        _blogService.DeleteBlogTagByBlogId(blog.Id);
-        //        foreach (var t in tags)
-        //        {
-        //            _blogService.SaveBlogTag(blog.Id, t.Id);
-        //        }
-        //        return Result.Ok("更新成功");
-        //    }
-        //}
-    }
+            //        _blogService.SaveBlog(blog);
+            //        foreach (var t in tags)
+            //        {
+            //            _blogService.SaveBlogTag(blog.Id, t.Id);
+            //        }
+            //        return Result.Ok("添加成功");
+            //    }
+            //    else
+            //    {
+            //        blog.UpdateTime = date;
+            //        _blogService.UpdateBlog(blog);
+            //        _blogService.DeleteBlogTagByBlogId(blog.Id);
+            //        foreach (var t in tags)
+            //        {
+            //            _blogService.SaveBlogTag(blog.Id, t.Id);
+            //        }
+            //        return Result.Ok("更新成功");
+            //    }
+            //}
+        }
 }

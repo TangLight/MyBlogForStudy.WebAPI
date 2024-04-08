@@ -18,5 +18,7 @@ namespace MyBlog.Service
             base._iBaseRepository = iCategoryRepository;
             _iCategoryRepository = iCategoryRepository;
         }
+
+        
     }
 }

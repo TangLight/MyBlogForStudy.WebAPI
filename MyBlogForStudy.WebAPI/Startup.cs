@@ -143,6 +143,7 @@ namespace MyBlog.WebApi
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
+            
 
 
             return services;

@@ -12,24 +12,48 @@ namespace MyBlog.Model.vo
         public string Msg { get; set; }
         public object Data { get; set; }
 
-        public static Result Ok(string message, object data = null)
+        private Result(int code, string msg)
         {
-            return new Result
-            {
-                Code = 200,
-                Msg = message,
-                Data = data
-            };
+            Code = code;
+            Msg = msg;
+            Data = null;
         }
 
-        public static Result Create(int code, string message)
+        private Result(int code, string msg, object data)
         {
-            return new Result
-            {
-                Code = code,
-                Msg = message,
-                Data = null
-            };
+            Code = code;
+            Msg = msg;
+            Data = data;
+        }
+
+        public static Result Ok(string msg, object data)
+        {
+            return new Result(200, msg, data);
+        }
+
+        public static Result Ok(string msg)
+        {
+            return new Result(200, msg);
+        }
+
+        public static Result Error(string msg)
+        {
+            return new Result(500, msg);
+        }
+
+        public static Result Error()
+        {
+            return new Result(500, "异常错误");
+        }
+
+        public static Result Create(int code, string msg, object data)
+        {
+            return new Result(code, msg, data);
+        }
+
+        public static Result Create(int code, string msg)
+        {
+            return new Result(code, msg);
         }
     }
 }
