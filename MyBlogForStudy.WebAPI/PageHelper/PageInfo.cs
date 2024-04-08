@@ -1,4 +1,6 @@
-﻿namespace MyBlogForStudy.WebAPI.PageHelper
+﻿using System.Collections.ObjectModel;
+
+namespace MyBlogForStudy.WebAPI.PageHelper
 {
     public class PageInfo<T> : PageSerializable<T>
     {
@@ -43,6 +45,50 @@
                 navigateLastPage = 0;
             }
         }
+        //public PageInfo(List<T> list, int navigatePages) : base(list)
+        //{
+        //    if (list is Page<T>)
+        //    {
+        //        Page<T> page = (Page<T>)list;
+        //        this.pageNum = page.PageNum;
+        //        this.pageSize = page.PageSize;
+
+        //        this.pages = page.Pages;
+        //        this.size = page.Count;
+        //        // 由于结果是 > startRow 的，所以实际的需要 +1
+        //        if (this.size == 0)
+        //        {
+        //            this.startRow = 0;
+        //            this.endRow = 0;
+        //        }
+        //        else
+        //        {
+        //            this.startRow = page.StartRow + 1;
+        //            // 计算实际的 endRow（最后一页的时候特殊）
+        //            this.endRow = this.startRow - 1 + this.size;
+        //        }
+        //    }
+        //    else if (list is Collection<T>)
+        //    {
+        //        this.pageNum = 1;
+        //        this.pageSize = list.Count;
+
+        //        this.pages = this.pageSize > 0 ? 1 : 0;
+        //        this.size = list.Count;
+        //        this.startRow = 0;
+        //        this.endRow = list.Count > 0 ? list.Count - 1 : 0;
+        //    }
+        //    if (list is Collection<T>)
+        //    {
+        //        this.navigatePages = navigatePages;
+        //        // 计算导航页
+        //        CalcNavigatepageNums();
+        //        // 计算前后页，第一页，最后一页
+        //        CalcPage();
+        //        // 判断页面边界
+        //        JudgePageBoudary();
+        //    }
+        //}
 
         public int PageNum { get => pageNum; set => pageNum = value; }
         public int PageSize { get => pageSize; set => pageSize = value; }
@@ -60,5 +106,49 @@
         public int[] NavigatepageNums { get => navigatepageNums; set => navigatepageNums = value; }
         public int NavigateFirstPage { get => navigateFirstPage; set => navigateFirstPage = value; }
         public int NavigateLastPage { get => navigateLastPage; set => navigateLastPage = value; }
+        private int[] CalculateNavigatepageNums(int pageNum, int navigatePages, int pages)
+        {
+            int[] navigatepageNums;
+            if (pages <= navigatePages)
+            {
+                navigatepageNums = new int[pages];
+                for (int i = 0; i < pages; i++)
+                {
+                    navigatepageNums[i] = i + 1;
+                }
+            }
+            else
+            {
+                navigatepageNums = new int[navigatePages];
+                int startNum = pageNum - navigatePages / 2;
+                int endNum = pageNum + navigatePages / 2;
+                if (startNum < 1)
+                {
+                    startNum = 1;
+                    for (int i = 0; i < navigatePages; i++)
+                    {
+                        navigatepageNums[i] = startNum++;
+                    }
+                }
+                else if (endNum > pages)
+                {
+                    endNum = pages;
+                    for (int i = navigatePages - 1; i >= 0; i--)
+                    {
+                        navigatepageNums[i] = endNum--;
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < navigatePages; i++)
+                    {
+                        navigatepageNums[i] = startNum++;
+                    }
+                }
+            }
+            return navigatepageNums;
+        }
+
+
     }
 }

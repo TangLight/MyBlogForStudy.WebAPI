@@ -11,5 +11,6 @@ namespace MyBlog.Repository
     public class TagRepository : BaseRepository<Tag>, ITagRepository
     
     {
+
     }
 }

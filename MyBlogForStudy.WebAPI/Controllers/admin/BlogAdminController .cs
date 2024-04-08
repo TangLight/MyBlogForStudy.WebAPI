@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using MyBlog.IService;
 using MyBlog.Model.DTO;
 using MyBlog.Model.entity;
+using MyBlog.Model.mapper;
 using MyBlog.Model.vo;
 using MyBlog.Service;
 using MyBlogForStudy.WebAPI.PageHelper;
 using SqlSugar;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 
 namespace MyBlogForStudy.WebAPI.Controllers.admin
@@ -143,10 +145,35 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         [HttpPost("blog")]
         public async Task<Result> SaveBlog([FromServices] IMapper imapper, [FromBody] BlogDTO blogDTO)
         {
+            //添加博客
             Blog blog = imapper.Map<Blog>( blogDTO);
             await _blogService.CreateAsync(blog);
+            //获取添加的最新的博客的id
+            var bloglist = await _blogService.QueryAsync();
+            long maxid = 0;
+            foreach (var blogItem in bloglist)
+            {
+                List<long> ids = new List<long>();
+                ids.Add(blogItem.Id);
+                maxid=ids.Max();
+            }
+            Blog blognew = await _blogService.FindAsync(c => c.Id == maxid);
+            //获取添加的博客tagID
+            int blognewTag= 0;
+            foreach (int tag in blogDTO.TagList)
+            {
+                blognewTag = tag;
+            }
 
-            return  Result.Ok("save", blog);
+            Blog_Tag blog_Tag = new Blog_Tag()
+            {
+                BlogId = blognew.Id,
+                TagId = blognewTag
+            };
+            await _blog_TagService.CreateAsync(blog_Tag);
+            
+
+            return  Result.Ok("save", blognew);
         }
 
         [HttpPut("blog")]

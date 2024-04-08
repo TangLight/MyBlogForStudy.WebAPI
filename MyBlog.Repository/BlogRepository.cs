@@ -18,6 +18,7 @@ namespace MyBlog.Repository
             return await base.Context.Queryable<Blog>()
               .Mapper(c => c.User, c => c.UserId, c => c.User.Id)
               .Mapper(c => c.Category, c => c.Cate, c => c.Category.Id)
+              
               .ToListAsync();
         }
         public async override Task<List<Blog>> QueryAsync(Expression<Func<Blog, bool>> func)
