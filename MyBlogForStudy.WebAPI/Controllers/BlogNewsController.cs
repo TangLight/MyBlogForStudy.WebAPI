@@ -25,7 +25,7 @@ namespace MyBlogForStudy.WebAPI.Controllers
         [HttpGet("BlogNews")]
         public async Task<ActionResult<ApiResult>> GetBlogNews()
         {
-            //只查找自己的博客
+            //只查找自己的博客新闻
             int id = Convert.ToInt32(this.User.FindFirst("Id").Value);
             var data = await _iBlogNewsService.QueryAsync(c => c.WriterId == id);
             if (data == null) return ApiResultHelper.Error("没有更多的文章");

@@ -10,6 +10,7 @@ namespace MyBlog.Model.entity
     using SqlSugar;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     [SugarTable("blog")]
     public class Blog
@@ -23,6 +24,8 @@ namespace MyBlog.Model.entity
         [SugarColumn(Length = 255)]
         public string FirstPicture { get; set; }
 
+        [SugarColumn(ColumnName = "Content", ColumnDataType = "nvarchar(max)")]
+        [MaxLength]
         public string Content { get; set; }
 
         public string Description { get; set; }
