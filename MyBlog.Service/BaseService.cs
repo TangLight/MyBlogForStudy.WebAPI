@@ -32,6 +32,13 @@ namespace MyBlog.Service
             return await _iBaseRepository.DeleteAsync(func);
         }
 
+        public async Task<bool> DeleteAsync(TEntity entity)
+        {
+            
+            return await _iBaseRepository.DeleteAsync(entity);
+            
+        }
+
         public async Task<bool> EditAsync(TEntity entity)
         {
             return await _iBaseRepository.EditAsync(entity);

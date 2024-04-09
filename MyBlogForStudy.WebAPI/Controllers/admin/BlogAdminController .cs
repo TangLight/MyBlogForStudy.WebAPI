@@ -75,14 +75,20 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
 
         [HttpDelete("blog")]
         //[OperationLogger("删除博客")]
-        public Result Delete([FromQuery] long id)
+        public async Task<Result> Delete([FromQuery] long id)
         {
             //_blogService.DeleteBlogTagByBlogId(id);
             //_blogService.DeleteBlogById(id);
             //_commentService.DeleteCommentsByBlogId(id);
-            _blogService.DeleteAsync(id);
-            _blog_TagService.DeleteAsync(c=>c.BlogId==id);
-            _commentService.DeleteAsync(c=>c.BlogId==id);
+            await _blogService.DeleteAsync(id);
+
+            List<Blog_Tag> _blog_Taglist = await _blog_TagService.QueryAsync(c=>c.BlogId==id);
+            foreach(var blog_Tag in _blog_Taglist)
+            {
+                await _blog_TagService.DeleteAsync(blog_Tag.Id);
+            }
+            
+            await _commentService.DeleteAsync(c=>c.BlogId==id);
             return Result.Ok("删除成功");
         }
 
@@ -147,6 +153,9 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
         {
             //添加博客
             Blog blog = imapper.Map<Blog>( blogDTO);
+            //添加博客时间
+            blog.UpdateTime= DateTime.Now;
+            blog.CreateTime = DateTime.Now;
             await _blogService.CreateAsync(blog);
             //获取添加的最新的博客的id
             var bloglist = await _blogService.QueryAsync();
@@ -159,19 +168,15 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
             }
             Blog blognew = await _blogService.FindAsync(c => c.Id == maxid);
             //获取添加的博客tagID
-            int blognewTag= 0;
-            foreach (int tag in blogDTO.TagList)
-            {
-                blognewTag = tag;
-            }
-
-            Blog_Tag blog_Tag = new Blog_Tag()
-            {
-                BlogId = blognew.Id,
-                TagId = blognewTag
-            };
-            await _blog_TagService.CreateAsync(blog_Tag);
             
+            foreach(int blognewtagId in blogDTO.TagList) {
+                Blog_Tag blog_Tag = new Blog_Tag()
+                {
+                    BlogId = blognew.Id,
+                    TagId = blognewtagId
+                };
+                await _blog_TagService.CreateAsync(blog_Tag);
+            }
 
             return  Result.Ok("save", blognew);
         }
@@ -186,6 +191,7 @@ namespace MyBlogForStudy.WebAPI.Controllers.admin
             }
             Blog blog = imapper.Map<Blog>(blogDTO);
             blog.Id = id;
+            blog.UpdateTime = DateTime.Now;
             await _blogService.EditAsync(blog);
             return Result.Ok("更新成功", blog);
         }

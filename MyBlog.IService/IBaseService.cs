@@ -14,7 +14,9 @@ namespace MyBlog.IService
         Task<bool> DeleteAsync(long id);
 
         Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> func);
-        
+
+        Task<bool> DeleteAsync(TEntity entity);
+
         Task<bool> EditAsync(TEntity entity);
         Task<TEntity> FindAsync(int id);
         Task<TEntity> FindAsync(long id);

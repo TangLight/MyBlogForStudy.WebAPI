@@ -15,6 +15,7 @@ namespace MyBlog.Repository
     //类必须放在接口前面
     public class BaseRepository<TEntity> : SimpleClient<TEntity>, IBaseRepository<TEntity> where TEntity : class, new()
     {
+        
         public BaseRepository(ISqlSugarClient context = null) : base(context)
         {
             Console.WriteLine("创建数据库");
@@ -63,7 +64,12 @@ namespace MyBlog.Repository
         }
         public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> func)
         {
-            return await base.DeleteByIdAsync(func);
+            return await base.DeleteAsync(func);
+        }
+        public async Task<bool> DeleteAsync(TEntity entity)
+        {
+            
+            return await base.DeleteAsync(entity);
         }
 
         public async Task<bool> EditAsync(TEntity entity)
